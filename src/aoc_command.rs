@@ -31,7 +31,12 @@ pub async fn aoc_command(command: &ApplicationCommandInteraction) -> String {
         .parse()
         .expect("Session is not valid");
 
-    if let Ok(lb) = aoc_get::fetch_leaderboard(635254, year, session).await {
+    let lb_id: u32 = env::var("AOC_LB")
+        .expect("Expected a leaderboard ID in the environment")
+        .parse()
+        .expect("Leaderboard ID is not valid");
+
+    if let Ok(lb) = aoc_get::fetch_leaderboard(lb_id, year, session).await {
         let mut longest = lb
             .members
             .iter()
@@ -82,8 +87,8 @@ pub async fn aoc_command(command: &ApplicationCommandInteraction) -> String {
             .join("\n");
 
         format!(
-            "**=== Leaderboard {} ===**```{}```*Created with \\❤️ by Koen02#2933*",
-            year, leaderboard
+            "**\\🎁 \\🎅 \\🌟 Advent of Code Leaderboard {0} \\☃️ \\🎄 \\❄️**\n*https://adventofcode.com/{0}/leaderboard/private/view/{1}*```{2}```*Created with \\❤️ by Koen02*",
+            year, lb_id, leaderboard
         )
     } else {
         "Not found".to_string()
