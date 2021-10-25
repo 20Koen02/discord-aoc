@@ -44,19 +44,28 @@ pub async fn fetch_leaderboard(
 
     let response = match result {
         Ok(res) => res,
-        Err(err) => return Err(FetchError::Reqwest(err)),
+        Err(err) => {
+            println!("{:?}", err);
+            return Err(FetchError::Reqwest(err));
+        }
     };
 
     // Get json from response
     let json = match response.text().await {
         Ok(json) => json,
-        Err(err) => return Err(FetchError::Reqwest(err)),
+        Err(err) => {
+            println!("{:?}", err);
+            return Err(FetchError::Reqwest(err));
+        }
     };
 
     // Parse json
     let leaderboard: ParseLeaderboard = match serde_json::from_str(&json) {
         Ok(lb) => lb,
-        Err(err) => return Err(FetchError::JsonParse(err)),
+        Err(err) => {
+            println!("{:?}", err);
+            return Err(FetchError::JsonParse(err));
+        }
     };
 
     let mut members: Vec<Member> = leaderboard

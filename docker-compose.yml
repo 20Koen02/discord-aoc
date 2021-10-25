@@ -1,0 +1,6 @@
+version: "3.8"
+services:
+  discord-aoc:
+    build: .
+    restart: unless-stopped
+    env_file: .env
