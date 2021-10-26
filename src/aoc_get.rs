@@ -80,7 +80,7 @@ pub async fn fetch_leaderboard(
     let lb: Leaderboard = Leaderboard {
         owner_id: leaderboard.owner_id,
         event: leaderboard.event,
-        members: members,
+        members,
     };
 
     Ok(lb)
