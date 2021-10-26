@@ -3,7 +3,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: DevSkim
+name: StaticAnalysis
 
 on:
   push:
@@ -14,7 +14,7 @@ on:
     - cron: '0 3 * * 1'
 
 jobs:
-  lint:
+  devskim:
     name: DevSkim
     runs-on: ubuntu-20.04
     permissions:
@@ -32,3 +32,19 @@ jobs:
         uses: github/codeql-action/upload-sarif@v1
         with:
           sarif_file: devskim-results.sarif
+
+  clippy:
+    name: Clippy
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - name: Add clippy component
+        run: rustup component add clippy
+      
+      - name: Clippy check
+        uses: actions-rs/clippy-check@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          args: --all-features
