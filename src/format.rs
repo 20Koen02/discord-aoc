@@ -3,5 +3,5 @@ pub fn get_dashes(longest: usize, name_len: usize) -> String {
 }
 
 pub fn add_padding(text: String, size: usize) -> String {
-    " ".repeat(size - text.len()) + &text;
+    " ".repeat(size - text.len()) + &text
 }
