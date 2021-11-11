@@ -1,3 +1,5 @@
+#![allow(clippy::pedantic)]
+
 mod aoc_command;
 mod aoc_get;
 mod format;
