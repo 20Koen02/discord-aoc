@@ -6,20 +6,15 @@ use std::collections::HashMap;
 pub struct Member {
     pub name: Option<String>,
     pub local_score: u32,
-    pub global_score: u32,
     pub stars: u32,
 }
 
 #[derive(Deserialize, Debug)]
 struct ParseLeaderboard {
-    owner_id: String,
-    event: String,
     members: HashMap<String, Member>,
 }
 
 pub struct Leaderboard {
-    pub owner_id: String,
-    pub event: String,
     pub members: Vec<Member>,
 }
 
@@ -68,18 +63,12 @@ pub async fn fetch_leaderboard(
         }
     };
 
-    let mut members: Vec<Member> = leaderboard
-        .members
-        .into_iter()
-        .map(|(_, member)| member)
-        .collect();
+    let mut members: Vec<Member> = leaderboard.members.into_values().collect();
 
     members.sort_by_key(|x| x.local_score);
     members.reverse();
 
     let lb: Leaderboard = Leaderboard {
-        owner_id: leaderboard.owner_id,
-        event: leaderboard.event,
         members,
     };
 
