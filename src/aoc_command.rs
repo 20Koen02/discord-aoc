@@ -37,8 +37,14 @@ pub async fn aoc_command(command: &ApplicationCommandInteraction) -> String {
         .expect("Leaderboard ID is not valid");
 
     if let Ok(lb) = aoc_get::fetch_leaderboard(lb_id, year, session).await {
-        let mut longest = lb
+        // limit to 25 members
+        let members = lb
             .members
+            .iter()
+            .take(25)
+            .collect::<Vec<&aoc_get::Member>>();
+
+        let mut longest = members
             .iter()
             .map(|x| {
                 if let Some(name) = &x.name {
@@ -53,8 +59,7 @@ pub async fn aoc_command(command: &ApplicationCommandInteraction) -> String {
         if longest < 9 {
             longest = 9
         }
-        let leaderboard = lb
-            .members
+        let leaderboard = members
             .iter()
             .enumerate()
             .map(|(i, member)| {
