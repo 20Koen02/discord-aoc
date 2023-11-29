@@ -41,6 +41,7 @@ pub async fn aoc_command(command: &ApplicationCommandInteraction) -> String {
         let members = lb
             .members
             .iter()
+            .filter(|x| x.local_score > 0)
             .take(25)
             .collect::<Vec<&aoc_get::Member>>();
 
